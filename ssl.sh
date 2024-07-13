@@ -25,16 +25,16 @@ send_message "${message}"
 ~/.acme.sh/acme.sh --issue --dns $dns -d $domain --keylength ec-256 > temp_ec256.log
 
 # SSL 证书的路径
-cert_path="/home/runner/.acme.sh/$domain/$domain.cer"
-key_path="/home/runner/.acme.sh/$domain/$domain.key"
-ca_cert_path="/home/runner/.acme.sh/$domain/ca.cer"
-fullchain_path="/home/runner/.acme.sh/$domain/fullchain.cer"
+cert_path="/home/runner/.acme.sh/${domain}/${domain}.cer"
+key_path="/home/runner/.acme.sh/${domain}/${domain}.key"
+ca_cert_path="/home/runner/.acme.sh/${domain}/ca.cer"
+fullchain_path="/home/runner/.acme.sh/${domain}/fullchain.cer"
 
 # SSL 证书的路径(ecc)
-cert_path_ecc="/home/runner/.acme.sh/$domain" + "_ecc/$domain.cer"
-key_path_ecc="/home/runner/.acme.sh/$domain" + "_ecc/$domain.key"
-ca_cert_path_ecc="/home/runner/.acme.sh/$domain" + "_ecc/ca.cer"
-fullchain_path_ecc="/home/runner/.acme.sh/$domain" + "_ecc/fullchain.cer"
+cert_path_ecc="/home/runner/.acme.sh/${domain}_ecc/${domain}.cer"
+key_path_ecc="/home/runner/.acme.sh/${domain}_ecc/${domain}.key"
+ca_cert_path_ecc="/home/runner/.acme.sh/${domain}_ecc/ca.cer"
+fullchain_path_ecc="/home/runner/.acme.sh/${domain}_ecc/fullchain.cer"
 
 # 发送证书和密钥
 function send_file(){
@@ -61,4 +61,5 @@ send_file $fullchain_path_ecc
 send_message "---以下为申请日志---"
 send_file "./temp_rsa2048.log"
 send_file "./temp_ec256.log"
+send_message "---------------------------"
 
