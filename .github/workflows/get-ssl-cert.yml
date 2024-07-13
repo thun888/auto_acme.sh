@@ -1,0 +1,43 @@
+name: Schedule SSL Cert Renewal
+
+on:
+  schedule:
+    # 每隔7天运行一次
+    - cron: '0 4 */7 * *'
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  renew-ssl-cert:
+    runs-on: ubuntu-latest
+
+    env:
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      TELEGRAM_API_KEY: ${{ secrets.TELEGRAM_API_KEY }}
+      DOMAIN: ${{ secrets.DOMAIN }}
+      DNS_PROVIDER: ${{ secrets.DNS_PROVIDER }}
+      DP_Id: ${{ secrets.DP_Id }}
+      DP_Key: ${{ secrets.DP_Key }}
+      EMAIL: ${{ secrets.EMAIL }}
+      
+    steps:
+    
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Get cache
+      uses: actions/cache@v1
+      id: cache
+      with:
+        path: ./
+        key: ${{runner.OS}}-${{hashFiles('**/ssl.sh')}}
+        
+    - name: Set up environment
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: |
+        sudo apt-get install -y curl
+        curl https://get.acme.sh | sh -s email=${EMAIL}
+        chmod +x ssl.sh
+
+    - name: Run SSL renewal script
+      run: |
+        ./ssl.sh
