@@ -20,13 +20,13 @@ message="现在是${current_time}，你的域名(${domain})的ssl证书正在申
 send_message "${message}"
 
 # 使用 acme.sh 申请 SSL 证书
-~/.acme.sh/acme.sh --issue --dns $dns -d $domain
+~/.acme.sh/acme.sh --issue --dns $dns -d $domain > temp.log
 
 # SSL 证书的路径
-cert_path="~/.acme.sh/$domain/$domain.cer"
-key_path="~/.acme.sh/$domain/$domain.key"
-ca_cert_path="~/.acme.sh/$domain/ca.cer"
-fullchain_path="~/.acme.sh/$domain/fullchain.cer"
+cert_path="/home/runner/.acme.sh/$domain/$domain.cer"
+key_path="/home/runner/.acme.sh/$domain/$domain.key"
+ca_cert_path="/home/runner/.acme.sh/$domain/ca.cer"
+fullchain_path="/home/runner/.acme.sh/$domain/fullchain.cer"
 
 # 发送证书和密钥
 function send_file(){
@@ -43,3 +43,6 @@ send_file $cert_path
 send_file $key_path
 send_file $ca_cert_path
 send_file $fullchain_path
+
+send_message "以下为申请日志"
+send_file "./temp.log"
