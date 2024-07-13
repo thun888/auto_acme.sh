@@ -59,4 +59,6 @@ send_file $ca_cert_path_ecc
 send_file $fullchain_path_ecc
 
 send_message "---以下为申请日志---"
-send_file "./temp.log"
+send_file "./temp_rsa2048.log"
+send_file "./temp_ec256.log"
+
