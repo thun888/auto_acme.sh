@@ -28,7 +28,7 @@ jobs:
       uses: actions/cache@v1
       id: cache
       with:
-        path: ./
+        path: '*'
         key: ${{runner.OS}}-${{hashFiles('**/ssl.sh')}}
         
     - name: Set up environment
